@@ -3,59 +3,96 @@ title: "INE Guatemala"
 output: 
   flexdashboard::flex_dashboard:
     social: [ "twitter", "facebook", "menu" ]
-    orientation: columns
+    orientation: rows
     vertical_layout: fill
-    logo: ine4.png
-    theme: readable
+    logo: Logo/ine4.png
+    #theme: readable
 ---
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(forcats)
+library(DT)
+library(gganimate)
+library(readxl)
 ```
 
-Sidebar {.sidebar}
-=====================================
+```{r}
+#IMPORTACIONES
+exportaciones = read_excel("Datos/exportaciones.xlsx")
+importaciones = read_excel("Datos/importaciones.xlsx")
 
-Link to [Page 3](#page-3)
-   
+```
+
+```{r}
+
+Cantidad_productos <- exportaciones %>% distinct(SAC) %>% count();
+
+cantidad_dinero = exportaciones %>% summarise(din =sum(VALOR));
+
+Cantidad_aduanas <- exportaciones %>% distinct(ADUANA) %>% count();
+
+Cantidad_pais <- exportaciones %>% distinct(PAIS) %>% count();
+
+```
+
 
 
 Importaciones
 ===================================== 
-    
+
+Row
+-----------------------------------------------------------------------
+
+### Total de productos SAC
+
+```{r}
+valueBox(Cantidad_productos, icon = "fa-box-open")
+```
+
+### Total de dinero en exportaciones ($)
+
+```{r}
+valueBox(format(round(as.numeric(cantidad_dinero), 1), big.mark=","), icon = "fa-coins")
+```
+
+### Total de Aduanas
+
+```{r}
+valueBox(Cantidad_aduanas, icon = "fa-warehouse")
+```
+
+### Paises provinientes
+
+```{r}
+valueBox(Cantidad_pais, icon = "fa-globe-americas")
+```
+
+Row
+-----------------------------------------------------------------------
+
 ### Chart 1
-    
+
 ```{r}
 ```
-    
+
 ### Chart 2
 
 ```{r}
 ```
 
-Exportaciones
-=====================================     
+Row
+-----------------------------------------------------------------------
 
-### Chart 1
-    
-```{r}
-```
-    
-### Chart 2
+### Chart 3
 
 ```{r}
 ```
 
-
-Page 3 {.hidden}
-=====================================
-
-### Chart 1
-    
-```{r}
-```
-    
-### Chart 2
+### Chart 4
 
 ```{r}
 ```
